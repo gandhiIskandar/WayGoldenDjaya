@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Way Golden Djaya</string>
+    <string name="developer">Bina Multimedia Indonesia</string>
+    <string name="by">Powered by</string>
+    <string name="login_desc">Sign in to continue</string>
+    <string name="login_name">Nama Lengkap</string>
+    <string name="login_id">Nomor ID</string>
+    <string name="login_caps">LOGIN</string>
+    <string name="login">Login</string>
+    <string name="alquran">Al Qur\'an</string>
+    <string name="hotel">Hotelku</string>
+    <string name="kiblat">Kiblat</string>
+    <string name="panduan">Panduan</string>
+    <string name="jadwal">Jadwal</string>
+    <string name="live_group">Live Group</string>
+    <string name="live_umum">Live Umum</string>
+    <string name="gallery">Gallery</string>
+    <string name="wisata_religi">Wisata Religi</string>
+    <string name="validasi_login">Mohon isi Nama dan Id</string>
+    <string name="user_salah">Mohon maaf, nama tersebut belum terdaftar</string>
+</resources>
