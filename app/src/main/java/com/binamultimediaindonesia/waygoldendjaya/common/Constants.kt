@@ -2,6 +2,9 @@ package com.binamultimediaindonesia.waygoldendjaya.common
 
 
 
+import android.media.AudioFormat
+import android.media.AudioRecord
+import android.media.MediaRecorder
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
@@ -77,8 +80,12 @@ object Constants {
         BottomNavItem(name = "Notification", route = "login", icon = Icons.Default.Notifications ),
         BottomNavItem(name = "Profile", route = "profile", icon = Icons.Default.Person )
     )
-
     val gson = Gson()
+
+  const val APP_ID :Long = 912748247
+    const val APP_SIGN ="3d05a5ed29fb09d683e2c8141b665e57d1dc374fd9dd6d1a98b6a354897830c8"
+
+
 
 
 

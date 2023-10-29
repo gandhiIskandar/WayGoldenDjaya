@@ -13,5 +13,7 @@ interface StoreUserDataRepository {
     suspend fun putDestinations(data:List<Destination>)
     suspend fun getDestinations():Flow<List<Destination>>
     suspend fun clearDataStore()
+    suspend fun putMuthawif(data:User)
+    suspend fun getMuthawif():Flow<User?>
 
 }

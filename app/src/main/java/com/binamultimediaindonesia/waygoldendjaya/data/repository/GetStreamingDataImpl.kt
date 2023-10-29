@@ -9,7 +9,8 @@ class GetStreamingDataImpl @Inject constructor(
     private val api: WayGoldenDjayaApi
 ):GetStreamingDataRepository {
 
-    override suspend fun getSteramingData(headers: Map<String, String>): Streaming {
-     return  api.getStreamingData(headers)
+    override suspend fun getSteramingData(headers: Map<String, String>, groupId:String): Streaming {
+     return  api.getStreamingData(headers, groupId)
     }
+
 }

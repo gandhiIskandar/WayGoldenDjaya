@@ -65,13 +65,14 @@ init {
     }
 
     private suspend fun storeUserData(data: LoginDto) {
-        Log.d("login", "data masuk")
 
         storeUserData.clearDataStore()
         storeUserData.putDestinations(data.destinations)
         storeUserData.putToken(data.token)
         storeUserData.putUser(data.user!!)
-
+        data.muthawif?.let {
+            storeUserData.putMuthawif(it)
+        }
 
 
     }

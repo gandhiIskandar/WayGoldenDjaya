@@ -7,6 +7,7 @@ data class LoginDto(
     val token: String ="",
     val message: String = "",
     val user: User?= null,
+    val muthawif: User?=null,
     val destinations:List<Destination> = listOf(),
     val access: Boolean = false
 

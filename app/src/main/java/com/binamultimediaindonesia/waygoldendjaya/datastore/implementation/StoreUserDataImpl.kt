@@ -2,6 +2,7 @@ package com.binamultimediaindonesia.waygoldendjaya.datastore.implementation
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -45,6 +46,7 @@ class StoreUserDataImpl @Inject constructor(
         val TOKEN = stringPreferencesKey("token")
         val USER = stringPreferencesKey("user")
         val DESTINATIONS = stringPreferencesKey("destinations")
+        val MUTHAWIFF = stringPreferencesKey("muthawif")
     }
 
     override suspend fun putToken(data: String) {
@@ -89,5 +91,20 @@ class StoreUserDataImpl @Inject constructor(
     override suspend fun getDestinations() = context.dataStore.data.map {  preferences ->
         val destinationsJson = preferences[DESTINATIONS]?:""
         destinationsJson.toDestinationList()
+    }
+
+    override suspend fun putMuthawif(data: User) {
+        context.dataStore.edit { preferences ->
+
+            preferences[MUTHAWIFF] = data.toJson()
+
+        }
+    }
+
+    override suspend fun getMuthawif() = context.dataStore.data.map{ preferences ->
+
+        val muthawifJson = preferences[MUTHAWIFF]?:""
+        muthawifJson.toUser()
+
     }
 }

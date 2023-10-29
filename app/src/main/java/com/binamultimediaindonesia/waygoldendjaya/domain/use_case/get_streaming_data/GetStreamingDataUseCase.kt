@@ -13,10 +13,10 @@ import javax.inject.Inject
 class GetStreamingDataUseCase @Inject constructor(
     private val repository: GetStreamingDataRepository
 ) {
-    operator fun invoke(headers : Map<String,String>) : Flow<Resource<Streaming>> = flow {
+    operator fun invoke(headers : Map<String,String>, groupId:String) : Flow<Resource<Streaming>> = flow {
         try{
             emit(Resource.Loading<Streaming>())
-            val streamingData = repository.getSteramingData(headers)
+            val streamingData = repository.getSteramingData(headers,groupId)
             emit(Resource.Success<Streaming>(streamingData))
         } catch(e: HttpException) {
             emit(Resource.Error<Streaming>(e.localizedMessage ?: "An unexpected error occured"))

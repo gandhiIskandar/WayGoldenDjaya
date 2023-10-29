@@ -1,17 +1,12 @@
 package com.binamultimediaindonesia.waygoldendjaya.representation.streaming
 
-import android.annotation.SuppressLint
-import android.app.Activity
+
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,55 +19,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.Fragment
+
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.media3.common.MediaItem
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.DefaultHttpDataSource
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.ProgressiveMediaSource
+
 import com.binamultimediaindonesia.waygoldendjaya.R
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalView
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.binamultimediaindonesia.waygoldendjaya.domain.player.StreamingState
-import com.binamultimediaindonesia.waygoldendjaya.domain.player.StreamingStateViewModel
-import com.binamultimediaindonesia.waygoldendjaya.domain.player.callback.StreamingCallback
+import com.binamultimediaindonesia.waygoldendjaya.common.Constants
 import com.binamultimediaindonesia.waygoldendjaya.representation.streaming.components.PlayStreaming
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Accent
-import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Primary
-import javax.inject.Inject
+import com.zegocloud.uikit.prebuilt.liveaudioroom.ZegoUIKitPrebuiltLiveAudioRoomConfig
+import com.zegocloud.uikit.prebuilt.liveaudioroom.ZegoUIKitPrebuiltLiveAudioRoomFragment
 
 
-@UnstableApi
 @Composable
 fun StreamingScreen(
     streamingDataViewModel: StreamingViewModel = hiltViewModel(),
-    streamingStateViewModel: StreamingStateViewModel,
-    streamingCallback: StreamingCallback
 
+    ) {
 
-) {
+    val context = LocalContext.current
+
     val state = streamingDataViewModel.state.value
 
-    val streamingState = streamingStateViewModel.playbackState
-
-    val url = streamingStateViewModel.urlFlow.collectAsState().value
-
-    if(url == "" ){
-
-        state.data?.let {
-            streamingStateViewModel.updateUrl(it.url)
-
-        }
-
-
-    }
+    val user = streamingDataViewModel.userData.value
 
 
 
@@ -170,93 +144,30 @@ fun StreamingScreen(
 
             PlayStreaming(modifier = Modifier)
 
-
-
             Box(modifier = Modifier.fillMaxSize()) {
 
 
-                Button(
-                    onClick = {
-
-                        when(streamingState.value){
-
-                            is StreamingState.OnPlaying -> {
-                                streamingCallback.onStopStreaming()
-                            }
-                            is StreamingState.OnReady -> {
-                                streamingCallback.onStartStreaming()
-                            }
-                            is StreamingState.OnStop -> {
-                                streamingCallback.onStartStreaming()
-                            }
-                            is StreamingState.OnError->{
-                                streamingCallback.onStartStreaming()
-                            }
-                            else -> {}
-                        }
 
 
 
 
-
-                    },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 25.dp)
-                        .align(Alignment.TopCenter),
-                    colors = ButtonDefaults.buttonColors(Primary)
-                ) {
-
-                when(streamingState.value){
-                    is StreamingState.OnReady -> {
-
-                        Text(text = "Mulai Streaming")
-                    }
-                    is StreamingState.OnPlaying -> {
-
-                        Text(text = "Stop Streaming")
-
-                    }
-                    is StreamingState.OnStop -> {
-                        Text(text = "Mulai Streaming")
-                    }
-                    is StreamingState.OnLoading->{
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(25.dp),
-                        color = Color.White
+                if (state.error.isNotBlank()) {
+                    Text(
+                        text = state.error,
+                        color = MaterialTheme.colors.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                            .align(Alignment.Center)
                     )
-                    }
-                    is StreamingState.OnBuffering ->{
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(25.dp),
-                            color = Color.White
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Buffering...")
-                        
-                    }
-                    is StreamingState.OnError -> {
-                        Icon(imageVector = Icons.Default.Refresh, contentDescription = "refresh" )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Coba Lagi..")
-
-                    }
-                    else -> {}
                 }
-
+                if (state.isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
 
             }
 
-            if(streamingState.value is StreamingState.OnError){
-
-                val error = streamingState.value as StreamingState.OnError
-
-                val message = error.message
-
-                Toast.makeText(LocalContext.current, message, Toast.LENGTH_LONG).show()
-            }
 
         }
     }
@@ -264,6 +175,26 @@ fun StreamingScreen(
 
 
 
+
+private fun setStreamingFragment(): Fragment {
+    val appID: Long = Constants.APP_ID
+    val appSign: String = Constants.APP_SIGN
+    val roomID: String = "1234"
+    val userID: String = "1456"
+    val userName: String = "1456"
+    val isHost = true
+
+    val config: ZegoUIKitPrebuiltLiveAudioRoomConfig = if (isHost) {
+        ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
+    } else {
+        ZegoUIKitPrebuiltLiveAudioRoomConfig.audience()
+    }
+
+
+    return ZegoUIKitPrebuiltLiveAudioRoomFragment.newInstance(
+        appID, appSign, userID, userName, roomID, config
+    )
+}
 
 
 @Preview

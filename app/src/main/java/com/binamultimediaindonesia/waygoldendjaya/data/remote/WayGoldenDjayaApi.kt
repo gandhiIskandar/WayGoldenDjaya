@@ -30,6 +30,8 @@ interface WayGoldenDjayaApi {
 
 
     @GET("streaming")
-    suspend fun getStreamingData(@HeaderMap headers:Map<String, String>):Streaming
+    suspend fun getStreamingData(@HeaderMap headers:Map<String, String>,
+                                 @Query("groupId") groupId:String
+                                 ):Streaming
 
 }

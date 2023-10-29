@@ -1,7 +1,6 @@
 package com.binamultimediaindonesia.waygoldendjaya.di
 
 import android.content.Context
-import androidx.media3.exoplayer.ExoPlayer
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.AlquranApi
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.WayGoldenDjayaApi
 import com.binamultimediaindonesia.waygoldendjaya.data.repository.*
@@ -41,6 +40,8 @@ object AppModule {
             .build()
             .create(AlquranApi::class.java)
     }
+
+
 
 
     @Provides
@@ -86,11 +87,7 @@ object AppModule {
         return GetAyahRepositoryImpl(api)
     }
 
-    @Provides
-    @Singleton
-    fun provideExoPlayer(@ApplicationContext context: Context): ExoPlayer {
-        return ExoPlayer.Builder(context).build()
-    }
+
 
 
 }
