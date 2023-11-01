@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.binamultimediaindonesia.waygoldendjaya.audio_room.AudioRoomBackgroundView
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.APP_ID
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.APP_SIGN
+import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toUser
 import com.binamultimediaindonesia.waygoldendjaya.databinding.ActivityStreamingBinding
 import com.binamultimediaindonesia.waygoldendjaya.representation.streaming.components.PlayStreaming
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Accent
@@ -31,8 +33,6 @@ import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.WayGol
 import com.zegocloud.uikit.prebuilt.liveaudioroom.ZegoUIKitPrebuiltLiveAudioRoomConfig
 import com.zegocloud.uikit.prebuilt.liveaudioroom.ZegoUIKitPrebuiltLiveAudioRoomFragment
 import com.zegocloud.uikit.prebuilt.liveaudioroom.core.*
-import com.zegocloud.uikit.prebuilt.liveaudioroom.listener.ZegoSeatsClosedListener
-import java.util.*
 
 
 class StreamingActivity : AppCompatActivity() {
@@ -46,6 +46,10 @@ class StreamingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.composeView.apply {
+
+           val muthawif = mutableStateOf(intent.getStringExtra("muthawif")!!.toUser())
+
+
 
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
@@ -142,7 +146,7 @@ class StreamingActivity : AppCompatActivity() {
 
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            PlayStreaming(modifier = Modifier)
+                            PlayStreaming(modifier = Modifier, muthawif.value )
 
 
                         }
@@ -160,21 +164,20 @@ class StreamingActivity : AppCompatActivity() {
 
 
     private fun addFragment() {
+
+
+
         val appID: Long = APP_ID
         val appSign: String = APP_SIGN
-        val roomID: String = "1234"
+        val roomID: String = intent.getStringExtra("room")!!
         val userID: String = intent.getStringExtra("userid")!!
-        var userName: String = intent.getStringExtra("username")!!
+        val userName: String = intent.getStringExtra("username")!!
         val isHost = intent.getBooleanExtra("host", false)
 
         val config: ZegoUIKitPrebuiltLiveAudioRoomConfig
         if (isHost) {
-
             config = ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
-            config.takeSeatIndexWhenJoining = 0
-            userName = "Muthawif"
-
-            config.userInRoomAttributes
+           config.takeSeatIndexWhenJoining = 0
 
 
         } else {
@@ -200,28 +203,6 @@ class StreamingActivity : AppCompatActivity() {
             val fragment = ZegoUIKitPrebuiltLiveAudioRoomFragment.newInstance(
                 appID, appSign, userID, userName, roomID, config
             )
-
-
-//        fragment.setSeatsClosedListener(object : ZegoSeatsClosedListener{
-//            override fun onSeatsClosed() {
-//                if(isHost){
-//                    fragment.openSeats()
-//                }
-//
-//            }
-//
-//            override fun onSeatsOpened() {
-//
-//                Log.d("seat", "Open")
-//
-//               if(!isHost){
-//                   fragment.closeSeats()
-//               }
-//            }
-//        })
-
-
-
 
 
 

@@ -13,6 +13,7 @@ data class User(
     val session: Session,
     val is_leader: Boolean,
     val name: String,
+    val room_number:String,
     val phone_number: String,
     val pin: String,
     val hotel:Hotel,

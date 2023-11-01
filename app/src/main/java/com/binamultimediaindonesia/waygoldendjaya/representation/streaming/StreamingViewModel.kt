@@ -30,29 +30,29 @@ class StreamingViewModel @Inject constructor(
 
    lateinit var userData : MutableState<User>
 
-    init {
-        viewModelScope.launch {
-
-            try{
-                userData = mutableStateOf(getUser())
-
-                val token = getToken()
-
-                val tokenVal = "Bearer $token"
-
-                val header = mapOf<String,String>(
-                    "Authorization" to tokenVal
-                )
-
-                getStreamingData(header, userData.value.group_id.toString())
-
-            }catch (e: Exception){
-                e.localizedMessage?.let { Log.d("error", it) }
-            }
-
-
-        }
-    }
+//    init {
+//        viewModelScope.launch {
+//
+//            try{
+//                userData = mutableStateOf(getUser())
+//
+//                val token = getToken()
+//
+//                val tokenVal = "Bearer $token"
+//
+//                val header = mapOf<String,String>(
+//                    "Authorization" to tokenVal
+//                )
+//
+//                getStreamingData(header, userData.value.group_id.toString())
+//
+//            }catch (e: Exception){
+//                e.localizedMessage?.let { Log.d("error", it) }
+//            }
+//
+//
+//        }
+//    }
 
     private fun getStreamingData(headers : Map<String,String>, groupId:String) {
         getStreamingDataUseCase(headers,groupId).onEach { result->
@@ -78,15 +78,6 @@ class StreamingViewModel @Inject constructor(
 
     }
 
-    private suspend fun getToken():String{
-
-        return getUserDataUseCase.getToken().first()!!
-
-    }
-
-    private suspend fun getUser(): User {
-        return getUserDataUseCase.getUser().first()!!
-    }
 
 
 }

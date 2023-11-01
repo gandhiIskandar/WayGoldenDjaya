@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), StartStreaming {
 
 
 
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startStreaming(false)
+      //  startStreaming(false)
 
 
         setContent {
@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
 
 
             val padding = it
-            Navigation(navController = navController, )
+            Navigation(navController = navController, this)
 
 
         })
@@ -88,33 +88,27 @@ class MainActivity : ComponentActivity() {
 
 
 
-    private fun randomUserName():String{
-        val sequence = sequenceOf("AB", "CD", "EF", "GH", "IJ", "KL", "MN", "OP", "QR", "ST", "UZ", "XV")
 
 
 
-       return sequence.shuffled().take(3).joinToString("")
-    }
 
-    private fun randomUserID():String{
-        val sequence = sequenceOf("A", "1", "B", "2", "3", "V", "M", "7", "9", "0", "V", "B")
-
-
-
-        return sequence.shuffled().take(4).joinToString("")
-    }
-
-    private fun startStreaming(isHost:Boolean){
+    override fun startStreaming(isHost: Boolean,room:String, username: String, userId: String, muthawif:String) {
 
         val intent = Intent(this, StreamingActivity::class.java)
-        intent.putExtra("username", randomUserName())
-        intent.putExtra("userid",randomUserID())
+        intent.putExtra("username", username)
+        intent.putExtra("userid",userId)
+        intent.putExtra("room",room)
         intent.putExtra("host",isHost)
+        intent.putExtra("muthawif",muthawif)
         startActivity(intent)
         finish()
 
     }
+}
 
+interface StartStreaming {
+
+    fun startStreaming(isHost:Boolean,room:String, username:String, userId:String,muthawif:String)
 
 }
 

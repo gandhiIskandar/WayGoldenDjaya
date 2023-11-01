@@ -1,6 +1,8 @@
 package com.binamultimediaindonesia.waygoldendjaya.representation.home
 
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -40,12 +42,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.binamultimediaindonesia.waygoldendjaya.StartStreaming
+import com.binamultimediaindonesia.waygoldendjaya.StreamingActivity
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.MENU_LIST
+import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toJson
+import com.binamultimediaindonesia.waygoldendjaya.common.Util.toastLong
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.DestinationItem
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.MenuItem
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.MultiColorText
@@ -57,7 +64,9 @@ import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Primar
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewmodel: HomeScreenViewmodel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    streaming: StartStreaming,
+    context: Context = LocalContext.current
 
 ) {
 
@@ -78,7 +87,8 @@ fun HomeScreen(
         Box {
 
             state.homeScreenData?.let {
-                Column(modifier = modifier.verticalScroll(rememberScrollState())
+                Column(
+                    modifier = modifier.verticalScroll(rememberScrollState())
 
                 ) {
                     Box(
@@ -157,7 +167,12 @@ fun HomeScreen(
 
                                         Spacer(modifier = modifier.width(5.dp))
 
-                                        it.user?.hotel?.let { it1 -> Text(text = it1.hotel_name, color = Accent) }
+                                        it.user?.hotel?.let { it1 ->
+                                            Text(
+                                                text = it1.hotel_name,
+                                                color = Accent
+                                            )
+                                        }
 
                                     }
                                 }
@@ -199,13 +214,37 @@ fun HomeScreen(
                     Spacer(modifier = modifier.height(15.dp))
 
                     LazyVerticalGrid(
-                        modifier = modifier.padding(horizontal = 15.dp).heightIn(max = 300.dp),
+                        modifier = modifier
+                            .padding(horizontal = 15.dp)
+                            .heightIn(max = 300.dp),
                         columns = GridCells.Fixed(4),
                         content = {
                             items(MENU_LIST.size) { index ->
 
-                                MenuItem(menu = MENU_LIST[index]){
-                                    navController.navigate(MENU_LIST[index].route)
+                                MenuItem(menu = MENU_LIST[index]) {
+                                    if (MENU_LIST[index].route == "streaming") {
+
+                                        val user = state.homeScreenData.user!!
+
+                                        if (state.homeScreenData.muthawif != null) {
+
+                                            streaming.startStreaming(
+                                                isHost = user.is_leader,
+                                                username = user.name,
+                                                userId = user.pin,
+                                                room = user.group.group_name.replace(" ", ""),
+                                                muthawif = state.homeScreenData.muthawif.toJson()
+                                            )
+                                        } else {
+
+                                            toastLong(R.string.null_muthawif, context)
+
+                                        }
+
+                                    } else {
+                                        navController.navigate(MENU_LIST[index].route)
+                                    }
+
                                 }
                             }
                         })
@@ -270,7 +309,6 @@ fun HomeScreen(
         }
 
     }
-
 
 
 }

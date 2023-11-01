@@ -31,6 +31,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.binamultimediaindonesia.waygoldendjaya.R
 import com.binamultimediaindonesia.waygoldendjaya.common.BigTextComponent
+import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toJson
 import com.binamultimediaindonesia.waygoldendjaya.common.NormalTextComponent
 import com.binamultimediaindonesia.waygoldendjaya.common.SmallText
 import com.binamultimediaindonesia.waygoldendjaya.common.Util.toastShort
@@ -38,6 +39,8 @@ import com.binamultimediaindonesia.waygoldendjaya.representation.login.component
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Accent
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Shapes
 import kotlinx.coroutines.delay
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun LoginScreen(
@@ -65,7 +68,7 @@ fun LoginScreen(
         state = state,
         navController = navController,
         context = context,
-        viewModel = viewModel
+
     )
 
 
@@ -240,7 +243,6 @@ private fun loginChecker(
     state: LoginState,
     navController: NavController,
     context: Context,
-    viewModel: ViewModel
 ) {
 
 
@@ -248,8 +250,10 @@ private fun loginChecker(
     state.loginData?.let { data ->
 
 
+
         if (data.access) {
             LaunchedEffect(key1 = true) {
+
                 navController.navigate("home") {
                     popUpTo("login") {
                         inclusive = true

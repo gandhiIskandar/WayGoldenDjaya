@@ -5,15 +5,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.binamultimediaindonesia.waygoldendjaya.StartStreaming
 import com.binamultimediaindonesia.waygoldendjaya.representation.ayah.AyahScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.HomeScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.login.LoginScreen
+import com.binamultimediaindonesia.waygoldendjaya.representation.profile.ProfileScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.streaming.StreamingScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.surah.SurahScreen
 
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, streaming: StartStreaming) {
 
 
 
@@ -23,7 +25,7 @@ fun Navigation(navController: NavHostController) {
 
 
         composable("home"){
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, streaming = streaming)
 
         }
         composable("login"){
@@ -31,11 +33,7 @@ fun Navigation(navController: NavHostController) {
             LoginScreen(navController)
 
         }
-        composable("streaming"){
 
-      StreamingScreen()
-
-        }
         composable("alquran"){
             SurahScreen(navController = navController, modifier = Modifier )
         }
@@ -43,6 +41,7 @@ fun Navigation(navController: NavHostController) {
             AyahScreen(modifier = Modifier)
         }
         composable("profile"){
+            ProfileScreen()
 
         }
         composable("notification"){

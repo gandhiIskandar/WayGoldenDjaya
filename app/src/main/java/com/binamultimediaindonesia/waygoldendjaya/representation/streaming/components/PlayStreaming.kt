@@ -23,13 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.binamultimediaindonesia.waygoldendjaya.R
+import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.CoilImage
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.MultiColorText
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Accent
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Primary
 
 @Composable
-fun PlayStreaming(modifier: Modifier) {
+fun PlayStreaming(modifier: Modifier, muthawif: User) {
     Box(modifier = modifier.padding(
         horizontal = 25.dp
     )){
@@ -84,7 +85,7 @@ fun PlayStreaming(modifier: Modifier) {
             ) {
                 // nanti diisi sesuai dengan nama user
                 Text(
-                    text = "Ustadz ABC", style = TextStyle(
+                    text = "Ustadz ${muthawif.name}", style = TextStyle(
                         fontSize = 17.sp,
                         fontWeight = FontWeight.Medium,
                         color = Accent
@@ -121,6 +122,6 @@ fun PlayStreaming(modifier: Modifier) {
 @Composable
 fun PlayStreamingPreview() {
 
-    PlayStreaming(modifier = Modifier)
+   // PlayStreaming(modifier = Modifier)
 
 }

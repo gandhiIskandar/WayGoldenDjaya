@@ -5,7 +5,7 @@ import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.LoginDto
 
 data class HomeState (
     val isLoading:Boolean = false,
-    val homeScreenData: HomeScreenDto? = null,
+    val homeScreenData: LoginDto? = null,
     val error:String =""
 
 )

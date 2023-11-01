@@ -142,7 +142,7 @@ fun StreamingScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            PlayStreaming(modifier = Modifier)
+           // PlayStreaming(modifier = Modifier)
 
             Box(modifier = Modifier.fillMaxSize()) {
 

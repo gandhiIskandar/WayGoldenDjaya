@@ -19,6 +19,9 @@ class LoginUseCase @Inject constructor(
         try{
             emit(Resource.Loading<LoginDto>())
             val loginData = repository.login(name, pin)
+
+
+
             emit(Resource.Success<LoginDto>(loginData))
         } catch(e: HttpException) {
             emit(Resource.Error<LoginDto>(e.localizedMessage ?: "An unexpected error occured"))

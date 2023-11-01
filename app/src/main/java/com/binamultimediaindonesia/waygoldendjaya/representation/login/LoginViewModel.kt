@@ -39,11 +39,15 @@ init {
 
     fun proccedLogin(name: String, pin: String) {
         loginUseCase(name, pin).onEach { result ->
+
             when (result) {
+
                 is Resource.Success -> {
                     if(result.data!!.access){
 
-                        storeUserData(result.data)
+
+
+                       storeUserData(result.data)
 
                     }
                     _state.value = LoginState(loginData = result.data)
@@ -66,20 +70,16 @@ init {
 
     private suspend fun storeUserData(data: LoginDto) {
 
-        storeUserData.clearDataStore()
-        storeUserData.putDestinations(data.destinations)
-        storeUserData.putToken(data.token)
-        storeUserData.putUser(data.user!!)
-        data.muthawif?.let {
-            storeUserData.putMuthawif(it)
-        }
+        storeUserData.clearData()
+        storeUserData.putLoginDto(data)
+
 
 
     }
 
    fun checkLoginorNot(){
      viewModelScope.launch {
-         val token = storeUserData.getToken().first()
+         val token = storeUserData.getLoginDto().first()!!.token
 
          if(token!= ""){
              _state.value = LoginState(loginData = LoginDto(access=true))
@@ -88,9 +88,7 @@ init {
            }
        }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
+
 }
 
 

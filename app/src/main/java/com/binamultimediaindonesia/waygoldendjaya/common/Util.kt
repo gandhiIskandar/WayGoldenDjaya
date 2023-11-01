@@ -40,5 +40,12 @@ object Util {
     }
 
 
+    fun tokenGenerator(token:String):Map<String,String>{
+        return mapOf(
+            "Authorization" to "Bearer $token"
+        )
+    }
+
+
 
 }

@@ -7,11 +7,13 @@ import com.binamultimediaindonesia.waygoldendjaya.data.repository.*
 import com.binamultimediaindonesia.waygoldendjaya.datastore.abstraction.StoreUserDataRepository
 import com.binamultimediaindonesia.waygoldendjaya.datastore.implementation.StoreUserDataImpl
 import com.binamultimediaindonesia.waygoldendjaya.domain.repository.*
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -23,9 +25,12 @@ object AppModule {
     @Provides
     @Singleton
     fun providerWayGoldenDjayaApi(): WayGoldenDjayaApi {
+
+
         return Retrofit.Builder()
             .baseUrl("https://admin.waygoldendjaya.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(OkHttpClient.Builder().build())
             .build()
             .create(WayGoldenDjayaApi::class.java)
     }
@@ -57,11 +62,7 @@ object AppModule {
         return StoreUserDataImpl(context)
     }
 
-    @Provides
-    @Singleton
-    fun providerHomeSreenDataRepository(api: WayGoldenDjayaApi):HomeScreenDataRepository{
-        return HomeScreenDataRepositoryImpl(api)
-    }
+
 
     @Provides
     @Singleton

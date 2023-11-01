@@ -7,8 +7,5 @@ import javax.inject.Inject
 
 class HomeScreenDataRepositoryImpl @Inject constructor(
     private val api: WayGoldenDjayaApi
-): HomeScreenDataRepository {
-    override suspend fun getHomeScreenData(headers: Map<String,String>) : HomeScreenDto {
-        return api.getHomeScreenData(headers)
-    }
+){
 }
