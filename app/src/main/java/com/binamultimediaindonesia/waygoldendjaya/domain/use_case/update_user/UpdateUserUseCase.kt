@@ -14,7 +14,7 @@ class UpdateUserUseCase @Inject constructor(
     private val repository: UserRepository
 ){
 
-    operator fun invoke(id:String, fieldMap: Map<String, Any>, headerMap: Map<String,String> ) : Flow<Resource<ResponseDto>> = flow {
+    operator fun invoke(id:String, fieldMap: Map<String, String>, headerMap: Map<String,String> ) : Flow<Resource<ResponseDto>> = flow {
         try{
             emit(Resource.Loading<ResponseDto>())
             val message = repository.updateUser(id, fieldMap, headerMap)

@@ -4,6 +4,8 @@ package com.binamultimediaindonesia.waygoldendjaya.data.remote
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.HomeScreenDto
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.LoginDto
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.ResponseDto
+import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.SchedulesDto
+import com.binamultimediaindonesia.waygoldendjaya.domain.model.Destination
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.Schedule
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.Streaming
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
@@ -27,12 +29,25 @@ interface WayGoldenDjayaApi {
         @Field("pin") pin: String
     ): LoginDto
 
-    @GET("schedules")
+    @FormUrlEncoded
+    @POST("update_pin")
+    suspend fun updatePIN(
+        @Field("new_pin") pin: String,
+        @HeaderMap header: Map<String, String>
+    ): ResponseDto
+
+
+    @POST("logout")
+    suspend fun logout(@HeaderMap headerMap: Map<String,String>) :ResponseDto
+
+    @GET("schedulesApi")
     suspend fun getSchedules(@HeaderMap headers: Map<String, String>,
-                             @Query("sessionId") sessionId: String):List<Schedule>
+                             @Query("id_session") sessionId: String):SchedulesDto
 
 
-
+@GET("destination/{id_destination}")
+suspend fun getDestination(@HeaderMap headers: Map<String, String>,
+                           @Path("id_destination") id: String):Destination
 
     @Multipart
     @POST("update_profile_image")
@@ -41,6 +56,8 @@ interface WayGoldenDjayaApi {
         @Part image: MultipartBody.Part
     ):ResponseDto
 
+    @POST("get_hcd")
+    suspend fun getHcd(@HeaderMap headers: Map<String, String>):LoginDto
 
 
 

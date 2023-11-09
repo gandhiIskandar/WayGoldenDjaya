@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.request.ImageRequest
 import com.binamultimediaindonesia.waygoldendjaya.audio_room.AudioRoomBackgroundView
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.APP_ID
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.APP_SIGN
@@ -48,6 +49,7 @@ class StreamingActivity : AppCompatActivity() {
         binding.composeView.apply {
 
            val muthawif = mutableStateOf(intent.getStringExtra("muthawif")!!.toUser())
+           val groupName = mutableStateOf(intent.getStringExtra("groupName")!!)
 
 
 
@@ -146,7 +148,7 @@ class StreamingActivity : AppCompatActivity() {
 
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            PlayStreaming(modifier = Modifier, muthawif.value )
+                            PlayStreaming(modifier = Modifier, muthawif.value, ImageRequest.Builder(context), groupName.value )
 
 
                         }
@@ -173,17 +175,25 @@ class StreamingActivity : AppCompatActivity() {
         val userID: String = intent.getStringExtra("userid")!!
         val userName: String = intent.getStringExtra("username")!!
         val isHost = intent.getBooleanExtra("host", false)
+        val userUrl = intent.getStringExtra("userUrl")!!
+
 
         val config: ZegoUIKitPrebuiltLiveAudioRoomConfig
         if (isHost) {
             config = ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
            config.takeSeatIndexWhenJoining = 0
+      val muthawif =   intent.getStringExtra("muthawif")!!.toUser()
+
+            config.userAvatarUrl=muthawif.profile_image
 
 
         } else {
             config = ZegoUIKitPrebuiltLiveAudioRoomConfig.audience()
+            config.userAvatarUrl =userUrl
 
         }
+
+
 
 
 

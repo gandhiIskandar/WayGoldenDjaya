@@ -12,6 +12,8 @@ import com.binamultimediaindonesia.waygoldendjaya.common.Util.tokenGenerator
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.LoginDto
 import com.binamultimediaindonesia.waygoldendjaya.datastore.abstraction.StoreUserDataRepository
 import com.binamultimediaindonesia.waygoldendjaya.domain.use_case.get_user.GetUserUseCase
+import com.binamultimediaindonesia.waygoldendjaya.domain.use_case.logout.LogoutUseCase
+import com.binamultimediaindonesia.waygoldendjaya.domain.use_case.update_pin_user.UpdatePinUserUseCase
 import com.binamultimediaindonesia.waygoldendjaya.domain.use_case.update_profile_image.UpdateProfileImageUseCase
 import com.binamultimediaindonesia.waygoldendjaya.domain.use_case.update_user.UpdateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +30,9 @@ class ProfileScreenViewModel @Inject constructor(
     private val userUseCase: GetUserUseCase,
     private val updateeUserUseCase: UpdateUserUseCase,
     private val storeUserDataRepository: StoreUserDataRepository,
-    private val updateProfileImageUseCase: UpdateProfileImageUseCase
+    private val updateProfileImageUseCase: UpdateProfileImageUseCase,
+    private val updatePinUserUseCase: UpdatePinUserUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
 
@@ -103,6 +107,59 @@ class ProfileScreenViewModel @Inject constructor(
                     Log.d("testUpdate", result.message?:"")
                 }
             }
+
+
+        }.launchIn(viewModelScope)
+
+    }
+
+    fun updatePinUser(data:String){
+
+        updatePinUserUseCase(data, tokenGenerator(dataPackage.token)).onEach {  result->
+
+            when(result){
+                is Resource.Success -> {
+                    _updateState.value = UpdateState(message = result.data?.message?:"")
+                    Log.d("testPIN", result.data?.message?:"")
+
+                }
+                is Resource.Loading -> {
+                    _updateState.value = UpdateState(isLoading = true)
+                    Log.d("testPIN", result.message?:"loading")
+                }
+                is Resource.Error -> {
+                    _updateState.value = UpdateState(message = result.message ?: "Unexpected Error")
+                    Log.d("testPIN", result.message?:"error")
+                }
+            }
+
+        }.launchIn(viewModelScope)
+
+
+
+    }
+
+    fun userLogout(logout:()->Unit){
+
+        logoutUseCase( tokenGenerator(dataPackage.token)).onEach { result ->
+
+            when(result){
+                is Resource.Success -> {
+                    storeUserDataRepository.clearData()
+                   logout.invoke()
+
+                }
+                is Resource.Loading -> {
+                    _updateState.value = UpdateState(isLoading = true)
+
+                }
+                is Resource.Error -> {
+                    _updateState.value = UpdateState(message = result.message ?: "Unexpected Error")
+
+                }
+            }
+
+
 
 
         }.launchIn(viewModelScope)

@@ -25,6 +25,12 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="user_update">Tidak Ada Perubahan Data</string>
+    <string name="pin_baru">Masukan PIN Baru</string>
+    <string name="pin_kosong">PIN Baru Tidak Boleh Kosong</string>
+    <string name="pin_pesan">%1$s</string>
+    <string name="kunjungan">Jika berkenan untuk mengunjungi destinasi diatas, Silahkan hubungi kami</string>
+    <string name="dalam_pengembangan">Mohon Maaf, fitur ini sedang dalam pengembangan</string>
+
 
     <string name="null_muthawif">Belum ada muthawiff dalam group ini</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>

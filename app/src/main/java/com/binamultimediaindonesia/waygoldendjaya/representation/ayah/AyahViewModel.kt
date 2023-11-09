@@ -36,8 +36,6 @@ class AyahViewModel @Inject constructor(
     private fun getAyah(surahNumber:String){
         getAyahUseCase(surahNumber).onEach { result->
 
-            Log.d("ayah",result.message?:"Tidak ada kesalahan")
-            Log.d("ayah",result.data.toString())
 
             when(result){
                  is Resource.Success ->{

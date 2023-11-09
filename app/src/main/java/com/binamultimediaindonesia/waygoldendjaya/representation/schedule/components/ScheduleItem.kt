@@ -22,7 +22,7 @@ fun ScheduleItem(schedule :Schedule) {
 
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
 
-        Text(text = showHourInIndonesia(schedule.date),
+        Text(text = schedule.hour,
             style = TextStyle(
                 color = Primary,
                 fontSize = 16.sp,

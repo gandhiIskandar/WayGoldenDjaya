@@ -21,15 +21,15 @@ import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
 class GetHomeScreenDataUseCase @Inject constructor(
-   private val storeUserDataRepository: StoreUserDataRepository
+   private val repository: UserRepository
 
 ) {
 
-    operator fun invoke(): Flow<Resource<LoginDto>> = flow {
+    operator fun invoke(headers:Map<String,String>): Flow<Resource<LoginDto>> = flow {
         try {
             emit(Resource.Loading<LoginDto>())
-            val loginDto = storeUserDataRepository.getLoginDto().first()
-            emit(Resource.Success<LoginDto>(loginDto!!))
+            val loginDto = repository.getHcd(headers)
+            emit(Resource.Success<LoginDto>(loginDto))
         } catch (e: IOException) {
             emit(Resource.Error<LoginDto>("Error Getting Data"))
         } catch (e: Exception) {

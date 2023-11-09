@@ -62,6 +62,11 @@ object AppModule {
         return StoreUserDataImpl(context)
     }
 
+    @Provides
+    @Singleton
+    fun providerGetDestinationRepository(api: WayGoldenDjayaApi):GetDestinationRepository{
+        return GetDestinationRepositoryImpl(api)
+    }
 
 
     @Provides

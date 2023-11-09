@@ -16,6 +16,12 @@ interface UserRepository {
 
     suspend fun updatePhotoProfile(data: MultipartBody.Part, headers: Map<String, String>): ResponseDto
 
+    suspend fun updatePin(data:String, headers: Map<String, String>):ResponseDto
+
+    suspend fun logout(headers: Map<String, String>):ResponseDto
+
+    suspend fun getHcd(headers: Map<String, String>):LoginDto
+
 
 
 }

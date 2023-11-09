@@ -3,6 +3,7 @@ package com.binamultimediaindonesia.waygoldendjaya.representation.home
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -53,6 +54,7 @@ import com.binamultimediaindonesia.waygoldendjaya.StreamingActivity
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.MENU_LIST
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toJson
 import com.binamultimediaindonesia.waygoldendjaya.common.Util.toastLong
+import com.binamultimediaindonesia.waygoldendjaya.common.Util.toastShort
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.DestinationItem
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.MenuItem
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.MultiColorText
@@ -222,28 +224,35 @@ fun HomeScreen(
                             items(MENU_LIST.size) { index ->
 
                                 MenuItem(menu = MENU_LIST[index]) {
-                                    if (MENU_LIST[index].route == "streaming") {
+                                    if(MENU_LIST[index].isFinished){
+                                        if (MENU_LIST[index].route == "streaming") {
 
-                                        val user = state.homeScreenData.user!!
+                                            val user = state.homeScreenData.user!!
 
-                                        if (state.homeScreenData.muthawif != null) {
+                                            if (state.homeScreenData.muthawif != null) {
 
-                                            streaming.startStreaming(
-                                                isHost = user.is_leader,
-                                                username = user.name,
-                                                userId = user.pin,
-                                                room = user.group.group_name.replace(" ", ""),
-                                                muthawif = state.homeScreenData.muthawif.toJson()
-                                            )
+                                                streaming.startStreaming(
+                                                    isHost = user.is_leader,
+                                                    username = user.name,
+                                                    userId = user.pin,
+                                                    room = user.group.group_name.replace(" ", ""),
+                                                    muthawif = state.homeScreenData.muthawif.toJson(),
+                                                    userUrl = user.profile_image,
+                                                    groupName = user.group.group_name
+                                                )
+                                            } else {
+
+                                                toastLong(R.string.null_muthawif, context)
+
+                                            }
+
                                         } else {
-
-                                            toastLong(R.string.null_muthawif, context)
-
+                                            navController.navigate(MENU_LIST[index].route)
                                         }
-
-                                    } else {
-                                        navController.navigate(MENU_LIST[index].route)
+                                    }else{
+                                       toastShort(R.string.dalam_pengembangan, context)
                                     }
+
 
                                 }
                             }
@@ -282,7 +291,10 @@ fun HomeScreen(
                     ) {
 
                         items(items = it.destinations) { each ->
-                            DestinationItem(each, model)
+
+                            DestinationItem(each, model){ id->
+                                navController.navigate("destination/$id")
+                            }
                         }
 
                     }
@@ -290,19 +302,30 @@ fun HomeScreen(
 
                 }
             }
-            if (state.error.isNotBlank()) {
-                Text(
-                    text = state.error,
-                    color = MaterialTheme.colors.error,
-                    textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .align(Alignment.Center)
-                )
-            }
-            if (state.isLoading) {
-                CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
+
+            if(state.homeScreenData == null) {
+
+                Box(modifier = Modifier.fillMaxSize()){
+
+                    if (state.error.isNotBlank()) {
+
+                        Text(
+                            text = state.error,
+                            color = MaterialTheme.colors.error,
+                            textAlign = TextAlign.Center,
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .align(Alignment.Center)
+                        )
+                    }
+                    if (state.isLoading) {
+                        CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
+                    }
+
+                }
+
+
             }
 
 

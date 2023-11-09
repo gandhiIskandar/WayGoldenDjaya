@@ -5,9 +5,11 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.menu_model.MenuModel
 import com.binamultimediaindonesia.waygoldendjaya.R
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toJson
@@ -23,13 +25,14 @@ import com.google.gson.Gson
 object Constants {
 
 
-    const val PARAM_ID_USER = "user_id"
+    const val PARAM_ID_DESTINATION = "destination"
     const val SURAH_NUMBER = "nomor"
     val MENU_LIST = listOf(
         MenuModel(
             icon = R.drawable.ic__alquran,
             route = "alquran",
-            text = R.string.alquran
+            text = R.string.alquran,
+            isFinished = true
 
         ),
         MenuModel(
@@ -47,19 +50,23 @@ object Constants {
         MenuModel(
             icon = R.drawable.ic__panduan,
             route = "panduan",
-            text = R.string.panduan
+            text = R.string.panduan,
+            isFinished = true
+
 
         ),
         MenuModel(
             icon = R.drawable.ic__jadwal,
-            route = "jadwal",
-            text = R.string.jadwal
+            route = "schedules",
+            text = R.string.jadwal,
+            isFinished = true
 
         ),
         MenuModel(
             icon = R.drawable.ic__livegroup,
             route = "streaming",
-            text = R.string.live_group
+            text = R.string.live_group,
+            isFinished = true
 
         ),
         MenuModel(
@@ -77,7 +84,7 @@ object Constants {
     )
     val BOTTOM_MENU_LIST = listOf(
         BottomNavItem(name = "Home", route = "home", icon = Icons.Default.Home),
-        BottomNavItem(name = "Notification", route = "login", icon = Icons.Default.Notifications),
+        BottomNavItem(name = "Jadwal", route = "schedules", icon = Icons.Default.DateRange  ),
         BottomNavItem(name = "Profile", route = "profile", icon = Icons.Default.Person)
     )
     val gson = Gson()

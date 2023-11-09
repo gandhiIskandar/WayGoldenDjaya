@@ -6,7 +6,6 @@ import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.ResponseDto
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
 import com.binamultimediaindonesia.waygoldendjaya.domain.repository.UserRepository
 import okhttp3.MultipartBody
-import retrofit2.Response
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -27,5 +26,17 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updatePhotoProfile(data: MultipartBody.Part, headers: Map<String,String>): ResponseDto {
        return api.updatePhoto(headers,data)
+    }
+
+    override suspend fun updatePin(data: String, headers:Map<String,String>): ResponseDto {
+        return api.updatePIN(data, headers)
+    }
+
+    override suspend fun logout(headers: Map<String, String>): ResponseDto {
+        return api.logout(headers)
+    }
+
+    override suspend fun getHcd(headers: Map<String, String>): LoginDto {
+       return api.getHcd(headers)
     }
 }

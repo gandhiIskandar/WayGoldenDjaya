@@ -27,9 +27,7 @@
             android:label="@string/title_activity_streaming"
             android:theme="@style/Theme.WayGoldenDjaya.NoActionBar" />
 
-        <service
-            android:name=".domain.player.service.StreamingService"
-            android:exported="false" />
+
 
         <activity
             android:name=".MainActivity"

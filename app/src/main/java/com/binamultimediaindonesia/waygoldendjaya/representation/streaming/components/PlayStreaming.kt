@@ -22,6 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.binamultimediaindonesia.waygoldendjaya.R
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.CoilImage
@@ -30,7 +33,7 @@ import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Accent
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Primary
 
 @Composable
-fun PlayStreaming(modifier: Modifier, muthawif: User) {
+fun PlayStreaming(modifier: Modifier, muthawif: User, model: ImageRequest.Builder, groupName:String) {
     Box(modifier = modifier.padding(
         horizontal = 25.dp
     )){
@@ -63,7 +66,7 @@ fun PlayStreaming(modifier: Modifier, muthawif: User) {
                 )
                 Spacer(modifier = modifier.width(5.dp))
                 Text(
-                    text = "Siaran Group 1",
+                    text = groupName,
                     style = TextStyle(
                         color = Color.White,
                         fontSize = 16.sp,
@@ -104,19 +107,31 @@ fun PlayStreaming(modifier: Modifier, muthawif: User) {
 
         }
 
-        Image(
-            painter = painterResource(id = R.drawable.sample_user), contentDescription = null,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(70.dp),
-            contentScale = ContentScale.Crop
-        )
+CoilImageHere(model = model, url = muthawif.profile_image )
 
 
     }
     }
 
 }
+
+@Composable
+fun CoilImageHere(model: ImageRequest.Builder, url: String) {
+    AsyncImage(
+        model = model
+            .data(url)
+            .decoderFactory(SvgDecoder.Factory())
+            .crossfade(true)
+            .build(),
+        modifier = Modifier
+            .size(70.dp)
+            .clip(CircleShape),
+
+        contentScale = ContentScale.Crop,
+        contentDescription = "Profile Image"
+    )
+}
+
 
 @Preview
 @Composable

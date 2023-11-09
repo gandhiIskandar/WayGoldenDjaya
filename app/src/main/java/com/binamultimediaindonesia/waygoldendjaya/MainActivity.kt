@@ -5,11 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.BOTTOM_MENU_LIST
@@ -58,8 +56,10 @@ class MainActivity : ComponentActivity(), StartStreaming {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         showBottomBar = when (navBackStackEntry?.destination?.route) {
-            "login" -> false // bottom navbar disembunyikan ketika di halaman login
-            else -> true // in all other cases show bottom bar
+            "home" -> true
+            "profile" -> true
+            "schedules" ->true// bottom navbar disembunyikan ketika di halaman login
+            else -> false // in all other cases show bottom bar
         }
 
         Scaffold(bottomBar = {
@@ -92,25 +92,31 @@ class MainActivity : ComponentActivity(), StartStreaming {
 
 
 
-    override fun startStreaming(isHost: Boolean,room:String, username: String, userId: String, muthawif:String) {
+    override fun startStreaming(isHost: Boolean, room:String, groupName: String, username:String, userUrl:String, userId: String, muthawif:String) {
 
         val intent = Intent(this, StreamingActivity::class.java)
         intent.putExtra("username", username)
         intent.putExtra("userid",userId)
+        intent.putExtra("userUrl",userUrl)
+        intent.putExtra("groupName",groupName)
         intent.putExtra("room",room)
         intent.putExtra("host",isHost)
         intent.putExtra("muthawif",muthawif)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
         startActivity(intent)
-        finish()
+
 
     }
 }
 
 interface StartStreaming {
 
-    fun startStreaming(isHost:Boolean,room:String, username:String, userId:String,muthawif:String)
+    fun startStreaming(isHost:Boolean,room:String,groupName:String, username:String, userUrl:String,userId:String,muthawif:String)
 
 }
+
 
 
 

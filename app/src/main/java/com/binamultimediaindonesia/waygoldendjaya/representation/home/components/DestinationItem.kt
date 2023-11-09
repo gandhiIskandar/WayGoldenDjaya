@@ -1,6 +1,7 @@
 package com.binamultimediaindonesia.waygoldendjaya.representation.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -24,8 +25,8 @@ import com.binamultimediaindonesia.waygoldendjaya.domain.model.Destination
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Primary
 
 @Composable
-fun DestinationItem(destination: Destination, model:ImageRequest.Builder) {
-    Box(modifier = Modifier.padding(5.dp)) {
+fun DestinationItem(destination: Destination, model:ImageRequest.Builder,onClick: (String)->Unit) {
+    Box(modifier = Modifier.padding(5.dp).clickable { onClick(destination.id) }) {
         Column(
             modifier = Modifier.wrapContentWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
