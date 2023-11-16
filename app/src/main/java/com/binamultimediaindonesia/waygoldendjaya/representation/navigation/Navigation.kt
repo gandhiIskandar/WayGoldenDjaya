@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.binamultimediaindonesia.waygoldendjaya.StartStreaming
-import com.binamultimediaindonesia.waygoldendjaya.domain.model.Hotel
+import com.binamultimediaindonesia.waygoldendjaya.ActivityCallback
 import com.binamultimediaindonesia.waygoldendjaya.representation.ayah.AyahScreen
+import com.binamultimediaindonesia.waygoldendjaya.representation.certificate.CertificateScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.destination_detail.DestinationScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.gallery.GalleryScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.HomeScreen
@@ -17,13 +17,12 @@ import com.binamultimediaindonesia.waygoldendjaya.representation.login.LoginScre
 import com.binamultimediaindonesia.waygoldendjaya.representation.panduan.PanduanScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.profile.ProfileScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.schedule.ScheduleScreen
-import com.binamultimediaindonesia.waygoldendjaya.representation.streaming.StreamingScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.streaming_umum.StreamingUmumScreen
 import com.binamultimediaindonesia.waygoldendjaya.representation.surah.SurahScreen
 
 
 @Composable
-fun Navigation(navController: NavHostController, streaming: StartStreaming) {
+fun Navigation(navController: NavHostController, streaming: ActivityCallback) {
 
 
 
@@ -55,8 +54,8 @@ fun Navigation(navController: NavHostController, streaming: StartStreaming) {
             ProfileScreen(navController = navController)
 
         }
-        composable("kiblat"){
-            KiblatScreen()
+        composable("sertifikat"){
+            CertificateScreen(streaming)
 
         }
 

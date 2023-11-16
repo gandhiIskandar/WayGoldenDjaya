@@ -2,6 +2,7 @@ package com.binamultimediaindonesia.waygoldendjaya.domain.repository
 
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.LoginDto
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.ResponseDto
+import com.binamultimediaindonesia.waygoldendjaya.domain.model.Certificate
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -21,6 +22,12 @@ interface UserRepository {
     suspend fun logout(headers: Map<String, String>):ResponseDto
 
     suspend fun getHcd(headers: Map<String, String>):LoginDto
+
+    suspend fun sendNotification(groupName:String, headers: Map<String, String>):ResponseDto
+
+    suspend fun getCertificate(headers: Map<String, String>):Certificate
+
+
 
 
 

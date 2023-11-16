@@ -49,6 +49,11 @@ class HomeScreenViewmodel @Inject constructor(
                 is Resource.Success -> {
                     _state.value = HomeState(homeScreenData = result.data)
 
+                    if(result.data != null){
+                        userDataRepository.clearData()
+                        userDataRepository.putLoginDto(result.data)
+                    }
+
                 }
 
                 is Resource.Error -> {

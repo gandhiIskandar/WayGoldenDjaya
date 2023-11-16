@@ -5,33 +5,39 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.binamultimediaindonesia.waygoldendjaya.streaming_activity.StreamingActivity
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.BOTTOM_MENU_LIST
 import com.binamultimediaindonesia.waygoldendjaya.datastore.abstraction.StoreUserDataRepository
+import com.binamultimediaindonesia.waygoldendjaya.download.AndroidDownloader
 import com.binamultimediaindonesia.waygoldendjaya.representation.navigation.BottomNavigationBar
 import com.binamultimediaindonesia.waygoldendjaya.representation.navigation.Navigation
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.WayGoldenDjayaTheme
+import com.binamultimediaindonesia.waygoldendjaya.service.NotificationService
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(), StartStreaming {
-
+class MainActivity : ComponentActivity(), ActivityCallback {
 
 
     @Inject
-    lateinit var storeUserData : StoreUserDataRepository
+    lateinit var storeUserData: StoreUserDataRepository
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-      //  startStreaming(false)
+
+
 
 
         setContent {
@@ -45,9 +51,9 @@ class MainActivity : ComponentActivity(), StartStreaming {
 
 
 
+
     @Composable
     fun MainScreen() {
-
 
 
         val navController = rememberNavController()
@@ -58,7 +64,7 @@ class MainActivity : ComponentActivity(), StartStreaming {
         showBottomBar = when (navBackStackEntry?.destination?.route) {
             "home" -> true
             "profile" -> true
-            "schedules" ->true// bottom navbar disembunyikan ketika di halaman login
+            "schedules" -> true// bottom navbar disembunyikan ketika di halaman login
             else -> false // in all other cases show bottom bar
         }
 
@@ -74,7 +80,6 @@ class MainActivity : ComponentActivity(), StartStreaming {
         }, content = { it ->
 
 
-
             val padding = it
             Navigation(navController = navController, this)
 
@@ -83,25 +88,9 @@ class MainActivity : ComponentActivity(), StartStreaming {
     }
 
 
-
-
-
-
-
-
-
-
-
-    override fun startStreaming(isHost: Boolean, room:String, groupName: String, username:String, userUrl:String, userId: String, muthawif:String) {
+    override fun startStreaming() {
 
         val intent = Intent(this, StreamingActivity::class.java)
-        intent.putExtra("username", username)
-        intent.putExtra("userid",userId)
-        intent.putExtra("userUrl",userUrl)
-        intent.putExtra("groupName",groupName)
-        intent.putExtra("room",room)
-        intent.putExtra("host",isHost)
-        intent.putExtra("muthawif",muthawif)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
@@ -109,11 +98,34 @@ class MainActivity : ComponentActivity(), StartStreaming {
 
 
     }
+
+    override fun startService(groupName: String) {
+        val serviceIntent = Intent(this, NotificationService::class.java)
+
+        val trimmedGroupName = groupName.replace(" ","_")
+
+        NotificationService.apply {
+            IS_ACTIVE = true
+            GROUP_NAME = trimmedGroupName
+        }
+
+        startService(serviceIntent)
+    }
+
+    override fun downloadData(url: String, token:String) {
+       val androidDownload = AndroidDownloader(this)
+
+        androidDownload.downloadFile(url, token)
+    }
 }
 
-interface StartStreaming {
+interface ActivityCallback {
 
-    fun startStreaming(isHost:Boolean,room:String,groupName:String, username:String, userUrl:String,userId:String,muthawif:String)
+    fun startStreaming()
+
+    fun startService(groupName:String)
+
+    fun downloadData(url:String, token:String)
 
 }
 

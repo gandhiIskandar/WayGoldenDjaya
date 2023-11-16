@@ -2,10 +2,6 @@ package com.binamultimediaindonesia.waygoldendjaya.representation.home
 
 
 import android.content.Context
-import android.content.Intent
-import android.widget.Toast
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -31,28 +27,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.binamultimediaindonesia.waygoldendjaya.StartStreaming
-import com.binamultimediaindonesia.waygoldendjaya.StreamingActivity
+import com.binamultimediaindonesia.waygoldendjaya.ActivityCallback
 import com.binamultimediaindonesia.waygoldendjaya.common.Constants.MENU_LIST
-import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toJson
 import com.binamultimediaindonesia.waygoldendjaya.common.Util.toastLong
 import com.binamultimediaindonesia.waygoldendjaya.common.Util.toastShort
 import com.binamultimediaindonesia.waygoldendjaya.representation.home.components.DestinationItem
@@ -61,13 +52,14 @@ import com.binamultimediaindonesia.waygoldendjaya.representation.home.components
 import com.binamultimediaindonesia.waygoldendjaya.representation.login.components.MyTextInput
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Accent
 import com.binamultimediaindonesia.waygoldendjaya.representation.ui.theme.Primary
+import com.binamultimediaindonesia.waygoldendjaya.service.NotificationService
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewmodel: HomeScreenViewmodel = hiltViewModel(),
     navController: NavController,
-    streaming: StartStreaming,
+    streaming: ActivityCallback,
     context: Context = LocalContext.current
 
 ) {
@@ -84,11 +76,23 @@ fun HomeScreen(
 
 
 
+
+
     Surface()
     {
         Box {
 
             state.homeScreenData?.let {
+
+                val user = state.homeScreenData.user!!
+
+                if(!NotificationService.IS_ACTIVE && !user.is_leader){
+
+                    //mulai service untuk notifikasi hanya untuk user biasa
+                    streaming.startService(user.group.group_name)
+                }
+
+
                 Column(
                     modifier = modifier.verticalScroll(rememberScrollState())
 
@@ -227,19 +231,11 @@ fun HomeScreen(
                                     if(MENU_LIST[index].isFinished){
                                         if (MENU_LIST[index].route == "streaming") {
 
-                                            val user = state.homeScreenData.user!!
+
 
                                             if (state.homeScreenData.muthawif != null) {
 
-                                                streaming.startStreaming(
-                                                    isHost = user.is_leader,
-                                                    username = user.name,
-                                                    userId = user.pin,
-                                                    room = user.group.group_name.replace(" ", ""),
-                                                    muthawif = state.homeScreenData.muthawif.toJson(),
-                                                    userUrl = user.profile_image,
-                                                    groupName = user.group.group_name
-                                                )
+                                                streaming.startStreaming()
                                             } else {
 
                                                 toastLong(R.string.null_muthawif, context)

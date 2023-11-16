@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable/ic__alquran.xml" value="0.1235" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable/ic__gallery.xml" value="0.1235" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable/ic__jadwal.xml" value="0.1235" />
@@ -12,10 +13,12 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable/ic__liveumum.xml" value="0.1235" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable/ic__panduan.xml" value="0.1235" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable/ic_grid.xml" value="0.1865" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/font/isle.xml" value="0.303125" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/font/isle_font.xml" value="0.303125" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/layout/activity_streaming.xml" value="0.14010416666666667" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/layout/streaming_layout.xml" value="0.14010416666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ComposeWayGoldenDjaya/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>
   </component>

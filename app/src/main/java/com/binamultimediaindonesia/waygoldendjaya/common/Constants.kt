@@ -1,23 +1,13 @@
 package com.binamultimediaindonesia.waygoldendjaya.common
 
 
-import android.media.AudioFormat
-import android.media.AudioRecord
-import android.media.MediaRecorder
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.menu_model.MenuModel
 import com.binamultimediaindonesia.waygoldendjaya.R
-import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toJson
-import com.binamultimediaindonesia.waygoldendjaya.common.Constants.toLoginDto
-import com.binamultimediaindonesia.waygoldendjaya.common.Util.convertToDate
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.LoginDto
-import com.binamultimediaindonesia.waygoldendjaya.domain.model.Destination
-import com.binamultimediaindonesia.waygoldendjaya.domain.model.Schedule
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.menu_model.BottomNavItem
 import com.google.gson.Gson
@@ -25,6 +15,8 @@ import com.google.gson.Gson
 object Constants {
 
 
+    const val PUSHER_CLUSTER = "ap1"
+    const val PUSHER_APP_KEY = "f2b09ade435cfeb716ef"
     const val PARAM_ID_DESTINATION = "destination"
     const val SURAH_NUMBER = "nomor"
     val MENU_LIST = listOf(
@@ -42,9 +34,10 @@ object Constants {
 
         ),
         MenuModel(
-            icon = R.drawable.ic__kiblat,
-            route = "kiblat",
-            text = R.string.kiblat
+            icon = R.drawable.ic_baseline_verified_24,
+            route = "sertifikat",
+            text = R.string.sertifikat,
+            isFinished = true
 
         ),
         MenuModel(

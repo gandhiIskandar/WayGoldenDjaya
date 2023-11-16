@@ -5,10 +5,8 @@ import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.HomeScreenDto
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.LoginDto
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.ResponseDto
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.SchedulesDto
-import com.binamultimediaindonesia.waygoldendjaya.domain.model.Destination
-import com.binamultimediaindonesia.waygoldendjaya.domain.model.Schedule
+import com.binamultimediaindonesia.waygoldendjaya.domain.model.*
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.Streaming
-import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -70,5 +68,13 @@ suspend fun getDestination(@HeaderMap headers: Map<String, String>,
     suspend fun getStreamingData(@HeaderMap headers:Map<String, String>,
                                  @Query("groupId") groupId:String
                                  ):Streaming
+
+    @GET("send_notification")
+    suspend fun sendNotifiaction(@HeaderMap headers:Map<String,String>,
+                                 @Query("group_name") groupName:String
+                                 ):ResponseDto
+
+    @GET("certificate")
+    suspend fun getCertificateData(@HeaderMap headers: Map<String, String>):Certificate
 
 }

@@ -3,6 +3,7 @@ package com.binamultimediaindonesia.waygoldendjaya.data.repository
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.WayGoldenDjayaApi
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.LoginDto
 import com.binamultimediaindonesia.waygoldendjaya.data.remote.dto.ResponseDto
+import com.binamultimediaindonesia.waygoldendjaya.domain.model.Certificate
 import com.binamultimediaindonesia.waygoldendjaya.domain.model.User
 import com.binamultimediaindonesia.waygoldendjaya.domain.repository.UserRepository
 import okhttp3.MultipartBody
@@ -38,5 +39,16 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getHcd(headers: Map<String, String>): LoginDto {
        return api.getHcd(headers)
+    }
+
+    override suspend fun sendNotification(
+        groupName: String,
+        headers: Map<String, String>
+    ): ResponseDto {
+        return api.sendNotifiaction(headers, groupName)
+    }
+
+    override suspend fun getCertificate(headers: Map<String, String>): Certificate {
+       return api.getCertificateData(headers)
     }
 }
